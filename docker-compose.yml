@@ -8,7 +8,6 @@ services:
       dockerfile: Dockerfile
     image: ghcr.io/omerzirh/medusa-store
     container_name: medusa-omer
-    restart: unless-stopped
     networks:
       - medusa-network
     environment:
@@ -24,8 +23,6 @@ services:
     volumes:
       - medusa-uploads:/app/server/uploads
       - medusa-static:/app/server/static
-    ports:
-      - "9000:9000"
 
 volumes:
   medusa-uploads:
