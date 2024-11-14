@@ -1,9 +1,6 @@
-import { defineConfig, loadEnv, Modules } from "@medusajs/utils";
-import {
-  SHOULD_DISABLE_ADMIN,
-  SSL_CONFIG,
-  WORKER_MODE,
-} from "./src/lib/constants";
+import { defineConfig, loadEnv, Modules } from "@medusajs/framework/utils";
+import { SHOULD_DISABLE_ADMIN, SSL_CONFIG, WORKER_MODE } from "src/lib/constants";
+
 
 loadEnv(process.env.NODE_ENV, process.cwd());
 

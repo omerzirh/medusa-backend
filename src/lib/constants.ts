@@ -1,7 +1,6 @@
-import { loadEnv } from "@medusajs/utils";
-
 import { ProjectConfigOptions } from "@medusajs/framework";
-import { assertValue } from "../utils/assert-value";
+import { loadEnv } from "@medusajs/framework/utils";
+import { assertValue } from "src/utils/assert-value";
 
 loadEnv(process.env.NODE_ENV || "development", process.cwd());
 
@@ -13,18 +12,15 @@ export const IS_DEV = process.env.NODE_ENV === "development";
 /**
  * Public URL for the backend
  */
-export const BACKEND_URL =
-  process.env.BACKEND_URL ?? "https://adminmedusa.omerzirh.com";
+
 
 /**
  * Database URL for Postgres instance used by the backend
  */
-export const DATABASE_URL = "postgres://postgres:Omer1234@5.161.64.194:5432/medusa-medusa-store"
 
 /**
  * (optional) Redis URL for Redis instance used by the backend
  */
-export const REDIS_URL = process.env.REDIS_URL;
 
 /**
  * Admin CORS origins
@@ -37,34 +33,11 @@ export const ADMIN_CORS = assertValue(
 /**
  * Auth CORS origins
  */
-export const AUTH_CORS = assertValue(
-  process.env.AUTH_CORS,
-  "Environment variable for AUTH_CORS is not set",
-);
 
-/**
- * Store/frontend CORS origins
- */
-export const STORE_CORS = assertValue(
-  process.env.STORE_CORS,
-  "Environment variable for STORE_CORS is not set",
-);
 
 /**
  * JWT Secret used for signing JWT tokens
- */
-export const JWT_SECRET = assertValue(
-  process.env.JWT_SECRET,
-  "Environment variable for JWT_SECRET is not set",
-);
 
-/**
- * Cookie secret used for signing cookies
- */
-export const COOKIE_SECRET = assertValue(
-  process.env.COOKIE_SECRET,
-  "Environment variable for COOKIE_SECRET is not set",
-);
 
 /**
  * (optional) Resend API Key and from Email - do not set if using SendGrid
