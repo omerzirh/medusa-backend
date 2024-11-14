@@ -25,7 +25,7 @@
     "db:seed": "medusa exec ./src/scripts/seed.ts",
     "docker:setup": "cp .env.template .env && pnpm project:setup",
     "project:setup": "pnpm install && pnpm db:setup && pnpm db:seed && pnpm create-user",
-    "format": "prettier --write .",
+    "format": "prettier --write a.",
     "clean": "rm -rf .medusa .medusa-db node_modules"
   },
   "dependencies": {
