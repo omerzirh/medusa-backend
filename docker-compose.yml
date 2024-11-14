@@ -1,13 +1,18 @@
+version: "3.8"
+
 services:
   medusa-omer:
     platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
-      image: ghcr.io/omerzirh/medusa-store
+    image: ghcr.io/omerzirh/medusa-store
+    container_name: medusa-omer
+    restart: unless-stopped
     networks:
-      - medusat-network
+      - medusa-network
     environment:
+      NODE_ENV: production
       STORE_CORS: "*"
       ADMIN_CORS: "*"
       AUTH_CORS: "*"
@@ -15,6 +20,19 @@ services:
       JWT_SECRET: "super-secret"
       COOKIE_SECRET: "super-secret"
       DATABASE_URL: postgres://postgres:Omer1234@5.161.64.194:5432/medusa-medusa-store
+    ports:
+      - "9000:9000"
     volumes:
-      - uploads:/app/uploads
-      - static:/app/static
+      - medusa-uploads:/app/uploads
+      - medusa-static:/app/static
+
+volumes:
+  medusa-uploads:
+    name: medusa-uploads
+  medusa-static:
+    name: medusa-static
+
+networks:
+  medusa-network:
+    name: medusa-network
+    driver: bridge
