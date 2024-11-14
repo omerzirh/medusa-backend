@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "medusa develop",
     "dev:email": "email dev --dir=./src/modules/email/templates --port=9090",
-    "build": "pnpm install && medusa build && node src/scripts/postBuild.js",
+    "build": "medusa build && node src/scripts/postBuild.js",
     "start": "medusa start",
     "start:prod": "medusa start --verbose",
     "db:create": "medusa db:create",
