@@ -1,0 +1,29 @@
+services:
+  medusa-omer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      image: ghcr.io/omerzirh/medusa-store
+    networks:
+      - medusat-network
+    environment:
+      STORE_CORS: "*"
+      ADMIN_CORS: "*"
+      AUTH_CORS: "*"
+      REDIS_URL: redis://:uOnV9g2MYYcQUHUuDyEKLcmNmOkPzqreMSz2zFjvDgWkIQUqRK8AwSxbAwppDLxD@5.161.64.194:6379
+      JWT_SECRET: "super-secret"
+      COOKIE_SECRET: "super-secret"
+      DATABASE_URL: postgres://postgres:Omer1234@5.161.64.194:5432/medusa-medusa-store
+    volumes:
+      - uploads:/app/uploads
+      - static:/app/static
+
+volumes:
+  postgres_data:
+  redis_data:
+  uploads:
+  static:
+
+networks:
+  medusat-network:
+    driver: bridge
