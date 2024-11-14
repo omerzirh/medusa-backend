@@ -20,19 +20,17 @@ services:
       JWT_SECRET: "super-secret"
       COOKIE_SECRET: "super-secret"
       DATABASE_URL: postgres://postgres:Omer1234@5.161.64.194:5432/medusa-medusa-store
+      MEDUSA_WORKER_MODE: "shared"
+    volumes:
+      - medusa-uploads:/app/server/uploads
+      - medusa-static:/app/server/static
     ports:
       - "9000:9000"
-    volumes:
-      - medusa-uploads:/app/uploads
-      - medusa-static:/app/static
 
 volumes:
   medusa-uploads:
-    name: medusa-uploads
   medusa-static:
-    name: medusa-static
 
 networks:
   medusa-network:
-    name: medusa-network
     driver: bridge

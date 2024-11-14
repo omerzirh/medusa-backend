@@ -1,8 +1,18 @@
 import { defineConfig, loadEnv, Modules } from "@medusajs/framework/utils";
-import { SHOULD_DISABLE_ADMIN, SSL_CONFIG, WORKER_MODE } from "src/lib/constants";
+import type { ProjectConfigOptions } from "@medusajs/framework";
 
 loadEnv(process.env.NODE_ENV, process.cwd());
 
+// Define constants that were previously imported
+const SSL_CONFIG = process.env.NODE_ENV === "production"
+  ? { ssl: { rejectUnauthorized: false } }
+  : { ssl: false };
+
+// Properly type the worker mode
+const WORKER_MODE: ProjectConfigOptions["workerMode"] = 
+  (process.env.MEDUSA_WORKER_MODE as "shared" | "worker" | "server") ?? "shared";
+
+const SHOULD_DISABLE_ADMIN = process.env.DISABLE_ADMIN === "true";
 const REDIS_URL = "redis://:uOnV9g2MYYcQUHUuDyEKLcmNmOkPzqreMSz2zFjvDgWkIQUqRK8AwSxbAwppDLxD@5.161.64.194:6379";
 
 const medusaConfig = {
@@ -42,7 +52,6 @@ const medusaConfig = {
         ],
       },
     },
-    // Fix for TypeScript error by removing the truthy check
     {
       key: Modules.EVENT_BUS,
       resolve: "@medusajs/event-bus-redis",
@@ -60,9 +69,7 @@ const medusaConfig = {
       },
     },
   ],
-  plugins: [
-    // 'medusa-fulfillment-manual'
-  ],
+  plugins: [],
 };
 
 export default defineConfig(medusaConfig);

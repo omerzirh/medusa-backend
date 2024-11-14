@@ -11,37 +11,35 @@ RUN apk add --no-cache \
     corepack enable && \
     ln -sf /usr/bin/python3 /usr/bin/python
 
-WORKDIR /app
+WORKDIR /app/server
 
-# Install production dependencies
-FROM base AS prod-deps
-COPY package.json pnpm-lock.yaml ./
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
-
-# Build the application
-FROM base AS builder
+# Install dependencies
+FROM base AS deps
 COPY package.json pnpm-lock.yaml ./
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+
+# Build the application
+FROM deps AS builder
 COPY . .
+COPY tsconfig.json .
+COPY medusa-config.ts .
 RUN pnpm build
 
-# Final stage
-FROM base
+# Production image
+FROM base AS runner
 
-COPY --from=prod-deps /app/node_modules /app/node_modules
-COPY --from=builder /app/dist /app/dist
-COPY --from=builder /app/.medusa /app/.medusa
-COPY --from=builder /app/tsconfig.json ./
-COPY --from=builder /app/medusa-config.ts ./
+COPY --from=deps /app/server/node_modules ./node_modules
+COPY --from=builder /app/server/dist ./dist
+COPY --from=builder /app/server/package.json .
+COPY --from=builder /app/server/medusa-config.js ./dist/
+COPY --from=builder /app/server/.medusa ./.medusa
 
-# Create and set proper permissions for volumes
-RUN mkdir -p /app/uploads /app/static && \
-    chown -R node:node /app/uploads /app/static
+# Create required directories and set permissions
+RUN mkdir -p uploads static && \
+    chown -R node:node .
 
-# Use non-root user
 USER node
 
-VOLUME ["/app/uploads", "/app/static"]
 EXPOSE 9000
 
 CMD ["pnpm", "start:prod"]
