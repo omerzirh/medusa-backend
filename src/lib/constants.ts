@@ -14,15 +14,12 @@ export const IS_DEV = process.env.NODE_ENV === "development";
  * Public URL for the backend
  */
 export const BACKEND_URL =
-  process.env.BACKEND_URL ?? "http://localhost:9000";
+  process.env.BACKEND_URL ?? "https://adminmedusa.omerzirh.com";
 
 /**
  * Database URL for Postgres instance used by the backend
  */
-export const DATABASE_URL = assertValue(
-  process.env.DATABASE_URL,
-  "Environment variable for DATABASE_URL is not set",
-);
+export const DATABASE_URL = "postgres://postgres:Omer1234@5.161.64.194:5432/medusa-medusa-store"
 
 /**
  * (optional) Redis URL for Redis instance used by the backend
