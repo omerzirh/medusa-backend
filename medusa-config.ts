@@ -32,8 +32,11 @@ const medusaConfig = {
     },
   },
   admin: {
+    serve: true,
+    path: "/app" as `/${string}`,  // Type assertion to match required format
     backendUrl: "https://adminmedusa.omerzirh.com",
     disable: SHOULD_DISABLE_ADMIN,
+    port: 7001
   },
   modules: [
     {

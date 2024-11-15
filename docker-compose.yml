@@ -23,6 +23,9 @@ services:
     volumes:
       - medusa-uploads:/app/server/uploads
       - medusa-static:/app/server/static
+    ports:
+      - "9000:9000"
+      - "7001:7001" 
 
 volumes:
   medusa-uploads:
