@@ -1,7 +1,7 @@
 import { Modules } from '@medusajs/utils'
 import { INotificationModuleService, IOrderModuleService } from '@medusajs/types'
 import { SubscriberArgs, SubscriberConfig } from '@medusajs/medusa'
-// import { EmailTemplates } from '../modules/email-notifications/templates'
+import { EmailTemplates } from '../modules/email-notification/templates'
 
 export default async function orderPlacedHandler({
   event: { data },
@@ -14,24 +14,26 @@ console.log("OMER BOK KAFA")
   const order = await orderModuleService.retrieveOrder(data.id, { relations: ['items', 'summary', 'shipping_address'] })
   const shippingAddress = await (orderModuleService as any).orderAddressService_.retrieve(order.shipping_address.id)
   console.log("OMER BOK KAFA", order, shippingAddress)
-  // try {
-  //   await notificationModuleService.createNotifications({
-  //     to: order.email,
-  //     channel: 'email',
-  //     template: EmailTemplates.ORDER_PLACED,
-  //     data: {
-  //       emailOptions: {
-  //         replyTo: 'info@example.com',
-  //         subject: 'Your order has been placed'
-  //       },
-  //       order,
-  //       shippingAddress,
-  //       preview: 'Thank you for your order!'
-  //     }
-  //   })
-  // } catch (error) {
-  //   console.error('Error sending order confirmation notification:', error)
-  // }
+  try {
+    await notificationModuleService.createNotifications({
+      to: order.email,
+      channel: 'email',
+      template: EmailTemplates.ORDER_PLACED,
+      data: {
+        emailOptions: {
+          replyTo: 'info@example.com',
+          subject: 'Your order has been placed'
+        },
+        order,
+        shippingAddress,
+        preview: 'Thank you for your order!'
+      }
+    })
+  } catch (error) {
+    console.error('Error sending order confirmation notification:', error)
+  }
+
+
 }
 
 export const config: SubscriberConfig = {
