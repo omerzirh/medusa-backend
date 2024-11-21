@@ -26,7 +26,7 @@ const medusaConfig = {
     http: {
       adminCors: "http://localhost:5173,http://localhost:9000,https://docs.medusajs.com,https://adminmedusa.omerzirh.com",
       authCors: "http://localhost:5173,http://localhost:9000,https://docs.medusajs.com,https://adminmedusa.omerzirh.com",
-      storeCors: "http://localhost:8000,https://docs.medusajs.com,store.omerzirh.com",
+      storeCors: "http://localhost:8000,https://docs.medusajs.com,https://autolier.pl",
       jwtSecret: "supersecret",
       cookieSecret: "supersecret",
     },
@@ -71,6 +71,24 @@ const medusaConfig = {
         },
       },
     },
+    {
+      resolve: "@medusajs/medusa/notification",
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/notification-sendgrid",
+            id: "sendgrid",
+            options: {
+              channels: ["email"],
+              api_key: process.env.SENDGRID_API_KEY,
+              from: process.env.SENDGRID_FROM,
+            },
+          },
+        ],
+      },
+    },
+
   ],
   plugins: [],
 };
