@@ -83,6 +83,9 @@ const medusaConfig = {
               channels: ["email"],
               api_key: process.env.SENDGRID_API_KEY,
               from: process.env.SENDGRID_FROM,
+              templates: {
+                order_placed: "d-2246c3cba4494ce1b031547391dba6cc",
+              },
             },
           },
         ],

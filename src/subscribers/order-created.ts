@@ -17,7 +17,7 @@ console.log("OMER BOK KAFA")
     await notificationModuleService.createNotifications({
       to: 'oturumbeles@gmail.com',
       channel: 'email',
-      template: 'medusa_order_create',
+      template: 'd-2246c3cba4494ce1b031547391dba6cc',
       data: {
         emailOptions: {
           replyTo: 'replyto@autolier.pl',
