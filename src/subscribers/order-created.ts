@@ -41,45 +41,31 @@ export default async function orderPlacedHandler({
 }: SubscriberArgs<any>) {
   const notificationModuleService: INotificationModuleService = container.resolve(Modules.NOTIFICATION)
   const orderModuleService: IOrderModuleService = container.resolve(Modules.ORDER)
-console.log("bok")
-  // Mock data for testing
-  const order = {
-    id: 'test-order-id',
-    display_id: 'ORD-123',
-    created_at: new Date().toISOString(),
-    email: 'omerzirh@gmail.com',
-    currency_code: 'USD',
-    items: [
-      { id: 'item-1', title: 'Item 1', product_title: 'Product 1', quantity: 2, unit_price: 10 },
-      { id: 'item-2', title: 'Item 2', product_title: 'Product 2', quantity: 1, unit_price: 25 }
-    ],
-    shipping_address: {
-      first_name: 'Test',
-      last_name: 'User',
-      address_1: '123 Main St',
-      city: 'Anytown',
-      province: 'CA',
-      postal_code: '12345',
-      country_code: 'US'
-    },
-    summary: { raw_current_order_total: { value: 45 } }
-  }
-
-  const shippingAddress = {
-    first_name: 'Test',
-    last_name: 'User',
-    address_1: '123 Main St',
-    city: 'Anytown',
-    province: 'CA',
-    postal_code: '12345',
-    country_code: 'US'
-  }
 
   try {
+    // Retrieve the actual order data
+    const order = await orderModuleService.retrieveOrder(data.id, {
+      relations: ['items', 'summary', 'shipping_address']
+    })
+
+    // Retrieve shipping address
+    const shippingAddress = await (orderModuleService as any).orderAddressService_.retrieve(
+      order.shipping_address.id
+    )
+
+    // Format order items to include totals
+    const formattedItems = order.items.map(item => ({
+      ...item,
+      total: item.quantity * item.unit_price
+    }))
+
+    // Get customer email from order or fall back to default
+    const customerEmail = order.email || shippingAddress.email || 'oturumbeles@gmail.com'
+
     await notificationModuleService.createNotifications({
-      to: order.email,
+      to: customerEmail,
       channel: 'email',
-      template: 'd-fba81075dc4340ae879e084285c77592',
+      template: 'd-fba81075dc4340ae879e084285c77592', // Your production template ID
       data: {
         emailOptions: {
           replyTo: 'replyto@autolier.pl',
@@ -87,22 +73,20 @@ console.log("bok")
         },
         order: {
           ...order,
-          // Calculate total for each item
-          items: order.items.map(item => ({
-            ...item,
-            total: item.quantity * item.unit_price
-          }))
+          items: formattedItems
         },
         shippingAddress,
         preview: 'Thank you for your order!',
         current_year: new Date().getFullYear(),
-        store_name: 'Your Store Name'
+        store_name: 'Autolier' // Replace with your actual store name
       }
     })
 
-    console.log(`Order confirmation email sent for order ${order.display_id}`)
+    console.log(`Order confirmation email sent for order ${order.display_id} to ${customerEmail}`)
   } catch (error) {
     console.error('Error sending order confirmation notification:', error)
+    console.error('Order ID:', data.id)
+    console.error('Error details:', error instanceof Error ? error.message : error)
     throw error
   }
 }
