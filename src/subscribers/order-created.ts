@@ -61,7 +61,7 @@ export default async function orderPlacedHandler({
 
     // Get customer email from order or fall back to default
     const customerEmail = order.email || shippingAddress.email || 'oturumbeles@gmail.com'
-
+    console.log("bok", order)
     await notificationModuleService.createNotifications({
       to: customerEmail,
       channel: 'email',
