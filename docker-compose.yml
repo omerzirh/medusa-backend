@@ -12,9 +12,9 @@ services:
       - medusa-network
     environment:
       NODE_ENV: production
-      STORE_CORS: "https://store.omerzirh.com,https://adminmedusa.omerzirh.com"
-      ADMIN_CORS: "https://store.omerzirh.com,https://adminmedusa.omerzirh.com,http://localhost:8000"
-      AUTH_CORS: "https://store.omerzirh.com,https://adminmedusa.omerzirh.com"
+      STORE_CORS: "https://store.omerzirh.com,https://autolier.pl"
+      ADMIN_CORS: "https://store.omerzirh.com,https://admin.autolier.pl,http://localhost:8000"
+      AUTH_CORS: "https://store.omerzirh.com,https://admin.autolier.pl"
       REDIS_URL: redis://:uOnV9g2MYYcQUHUuDyEKLcmNmOkPzqreMSz2zFjvDgWkIQUqRK8AwSxbAwppDLxD@5.161.64.194:6379
       JWT_SECRET: "super-secret"
       COOKIE_SECRET: "super-secret"

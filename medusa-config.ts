@@ -24,8 +24,8 @@ const medusaConfig = {
     workerMode: WORKER_MODE,
 
     http: {
-      adminCors: "http://localhost:5173,http://localhost:9000,https://docs.medusajs.com,https://adminmedusa.omerzirh.com",
-      authCors: "http://localhost:5173,http://localhost:9000,https://docs.medusajs.com,https://adminmedusa.omerzirh.com",
+      adminCors: "http://localhost:5173,http://localhost:9000,https://docs.medusajs.com,https://admin.autolier.pl",
+      authCors: "http://localhost:5173,http://localhost:9000,https://docs.medusajs.com,https://admin.autolier.pl",
       storeCors: "http://localhost:8000,https://docs.medusajs.com,https://autolier.pl",
       jwtSecret: "supersecret",
       cookieSecret: "supersecret",
@@ -34,7 +34,7 @@ const medusaConfig = {
   admin: {
     serve: true,
     path: "/app" as `/${string}`,  // Type assertion to match required format
-    backendUrl: "https://adminmedusa.omerzirh.com",
+    backendUrl: "https://admin.autolier.pl",
     disable: SHOULD_DISABLE_ADMIN,
     port: 7001
   },
