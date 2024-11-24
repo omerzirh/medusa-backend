@@ -102,6 +102,9 @@ const medusaConfig = {
             options: {
               apiKey: STRIPE_API_KEY,
               webhookSecret: STRIPE_WEBHOOK_SECRET,
+              payment_methods: {
+                blik: { enabled: true },
+              },
             },
           },
         ],
