@@ -13,6 +13,8 @@ const WORKER_MODE: ProjectConfigOptions["workerMode"] =
 
 const SHOULD_DISABLE_ADMIN = process.env.DISABLE_ADMIN === "true";
 const REDIS_URL = "redis://:uOnV9g2MYYcQUHUuDyEKLcmNmOkPzqreMSz2zFjvDgWkIQUqRK8AwSxbAwppDLxD@5.161.64.194:6379";
+const STRIPE_API_KEY = process.env.STRIPE_API_KEY;
+const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 
 const medusaConfig = {
   projectConfig: {
@@ -89,24 +91,23 @@ const medusaConfig = {
         ],
       },
     },
-    {
+    ...(STRIPE_API_KEY && STRIPE_WEBHOOK_SECRET ? [{
       key: Modules.PAYMENT,
-      resolve: "@medusajs/payment",
+      resolve: '@medusajs/payment',
       options: {
         providers: [
           {
-            resolve: "@medusajs/payment-stripe",
+            resolve: '@medusajs/payment-stripe',
+            id: 'stripe',
             options: {
-              credentials: {
-                usd: {
-                  apiKey: process.env.STRIPE_API_KEY,
-                },
-              },
+              apiKey: STRIPE_API_KEY,
+              webhookSecret: STRIPE_WEBHOOK_SECRET,
             },
           },
         ],
       },
-    },
+    }] : [])
+
   ],
   plugins: [],
 };

@@ -38,6 +38,7 @@
     "@medusajs/framework": "latest",
     "@medusajs/medusa": "latest",
     "@medusajs/payment": "^2.0.4",
+    "@medusajs/payment-stripe": "^2.0.4",
     "@medusajs/types": "latest",
     "@medusajs/user": "latest",
     "@medusajs/utils": "^2.0.4",
