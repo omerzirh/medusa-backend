@@ -37,6 +37,7 @@
     "@medusajs/file-local": "latest",
     "@medusajs/framework": "latest",
     "@medusajs/medusa": "latest",
+    "@medusajs/payment": "^2.0.4",
     "@medusajs/types": "latest",
     "@medusajs/user": "latest",
     "@medusajs/utils": "^2.0.4",
