@@ -1,6 +1,5 @@
 import { defineConfig, loadEnv, Modules } from "@medusajs/framework/utils";
 import type { ProjectConfigOptions } from "@medusajs/framework";
-
 loadEnv(process.env.NODE_ENV, process.cwd());
 
 // Define constants that were previously imported
@@ -75,7 +74,6 @@ const medusaConfig = {
       resolve: "@medusajs/medusa/notification",
       options: {
         providers: [
-          // ...
           {
             resolve: "@medusajs/medusa/notification-sendgrid",
             id: "sendgrid",
@@ -91,7 +89,24 @@ const medusaConfig = {
         ],
       },
     },
-
+    {
+      key: Modules.PAYMENT,
+      resolve: "@medusajs/payment",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/payment-stripe",
+            options: {
+              credentials: {
+                usd: {
+                  apiKey: process.env.STRIPE_API_KEY,
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
   ],
   plugins: [],
 };
