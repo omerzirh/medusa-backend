@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv, Modules } from "@medusajs/framework/utils";
 import type { ProjectConfigOptions } from "@medusajs/framework";
+
 loadEnv(process.env.NODE_ENV, process.cwd());
 
 // Define constants that were previously imported
@@ -12,22 +13,23 @@ const WORKER_MODE: ProjectConfigOptions["workerMode"] =
   (process.env.MEDUSA_WORKER_MODE as "shared" | "worker" | "server") ?? "shared";
 
 const SHOULD_DISABLE_ADMIN = process.env.DISABLE_ADMIN === "true";
-const REDIS_URL = "redis://:uOnV9g2MYYcQUHUuDyEKLcmNmOkPzqreMSz2zFjvDgWkIQUqRK8AwSxbAwppDLxD@5.161.64.194:6379";
+const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
 const STRIPE_API_KEY = process.env.STRIPE_API_KEY;
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 
+
 const medusaConfig = {
   projectConfig: {
-    databaseUrl: "postgres://postgres:Omer1234@5.161.64.194:5432/medusa-medusa-store",
+    databaseUrl: process.env.DATABASE_URL,
     databaseDriverOptions: SSL_CONFIG,
     databaseLogging: true,
     redisUrl: REDIS_URL,
     workerMode: WORKER_MODE,
 
     http: {
-      adminCors: "http://localhost:5173,http://localhost:9000,https://docs.medusajs.com,https://admin.autolier.pl",
-      authCors: "http://localhost:5173,http://localhost:9000,https://docs.medusajs.com,https://admin.autolier.pl",
-      storeCors: "http://localhost:8000,https://docs.medusajs.com,https://autolier.pl",
+      adminCors: process.env.ADMIN_CORS,
+      authCors: process.env.AUTH_CORS,
+      storeCors: process.env.STORE_CORS,
       jwtSecret: "supersecret",
       cookieSecret: "supersecret",
     },
@@ -35,7 +37,7 @@ const medusaConfig = {
   admin: {
     serve: true,
     path: "/app" as `/${string}`,  // Type assertion to match required format
-    backendUrl: "https://admin.autolier.pl",
+    backendUrl:process.env.BACKEND_URL,
     disable: SHOULD_DISABLE_ADMIN,
     port: 7001
   },
