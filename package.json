@@ -35,6 +35,7 @@
     "@medusajs/event-bus-redis": "latest",
     "@medusajs/file": "latest",
     "@medusajs/file-local": "latest",
+    "@medusajs/file-s3": "^2.1.1",
     "@medusajs/framework": "latest",
     "@medusajs/medusa": "latest",
     "@medusajs/payment": "^2.0.4",
