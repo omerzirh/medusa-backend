@@ -9,16 +9,16 @@ RUN apk add --no-cache \
     ln -sf /usr/bin/python3 /usr/bin/python
 
 FROM base AS prod-deps
-COPY package.json pnpm-lock.yaml ./
+COPY package.json ./
 # Force update of the lockfile
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --force
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --force
 
 FROM base AS builder
-COPY package.json pnpm-lock.yaml ./
+COPY package.json ./
 # Force update of the lockfile
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --force
 COPY . .
-RUN pnpm build
+RUN pnpm run build
 
 FROM base
 COPY --from=prod-deps /app/node_modules /app/node_modules
