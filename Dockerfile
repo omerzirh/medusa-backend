@@ -10,15 +10,18 @@ RUN apk add --no-cache \
 
 FROM base AS prod-deps
 COPY package.json pnpm-lock.yaml ./
-# Force update of the lockfile
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --force
+# Allow regeneration of the lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --no-frozen-lockfile
 
 FROM base AS builder
 COPY package.json pnpm-lock.yaml ./
-# Force update of the lockfile
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --force
+# Allow regeneration of the lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --no-frozen-lockfile
 COPY . .
-RUN pnpm build
+# Create a custom build script that handles the nested pnpm install
+RUN echo '#!/bin/sh\npnpm run build:server && pnpm run build:admin && cd .medusa/server && pnpm install --no-frozen-lockfile' > custom-build.sh && \
+    chmod +x custom-build.sh && \
+    ./custom-build.sh
 
 FROM base
 COPY --from=prod-deps /app/node_modules /app/node_modules
