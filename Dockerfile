@@ -1,12 +1,18 @@
 # syntax=docker/dockerfile:1.4
+
 FROM node:20.18-alpine AS base
-WORKDIR /app
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
 RUN apk add --no-cache \
     python3 \
     make \
     g++ && \
-    npm install -g pnpm && \
+    corepack enable && \
     ln -sf /usr/bin/python3 /usr/bin/python
+
+WORKDIR /app
 
 FROM base AS prod-deps
 COPY package.json ./
@@ -21,11 +27,16 @@ COPY . .
 RUN pnpm run build
 
 FROM base
+
 COPY --from=prod-deps /app/node_modules /app/node_modules
 COPY --from=builder /app/.medusa ./
 COPY --from=builder /app/tsconfig.json ./
 COPY --from=builder /app/medusa-config.ts ./
+
 WORKDIR /app/server
+
 VOLUME ["/app/uploads", "/app/static"]
+
 EXPOSE 9000
+
 CMD ["pnpm", "start:prod"]
