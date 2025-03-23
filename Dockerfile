@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM node:20.18-alpine AS base
+FROM --platform=linux/arm64 node:20.18-alpine AS base
 WORKDIR /app
 RUN apk add --no-cache \
     python3 \
