@@ -11,12 +11,12 @@ RUN apk add --no-cache \
 FROM base AS prod-deps
 COPY package.json ./
 # Force update of the lockfile
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --force
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --force
 
 FROM base AS builder
 COPY package.json ./
 # Force update of the lockfile
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --force
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --force
 COPY . .
 RUN pnpm run build
 
