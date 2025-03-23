@@ -39,4 +39,4 @@ VOLUME ["/app/uploads", "/app/static"]
 
 EXPOSE 9000
 
-CMD ["pnpm", "start:prod"]
+CMD ["sh", "-c", "pnpm medusa migrations run && pnpm start:prod"]
