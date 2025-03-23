@@ -1,13 +1,13 @@
 version: "3.8"
 
 services:
-  medusa-omer:
-    platform: linux/amd64
+  medusa-backend:
+    platform: linux/amd64,linux/arm64
     build:
       context: .
       dockerfile: Dockerfile
-    image: ghcr.io/omerzirh/medusa-store
-    container_name: medusa-omer
+    image: ghcr.io/omerzirh/medusa-backend
+    container_name: medusa-backend
     networks:
       - medusa-network
     environment:
